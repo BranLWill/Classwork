@@ -1,152 +1,60 @@
-# Instructions for Running my Project
+# Brandon Willett
+    
+def Col(Col1,Col2,Col3,COl4):
+    Col1={1 and 5 and 9 and 13}
+    Col2={2 and 6 and 10 and 14}
+    Col3={3 and 7 and 11 and 15}
+    Col4={4 and 8 and 12 and 16}
 
-#step 1 open a new file on python
-#step 2 copy and paste the code
-#step 3 select run from the options menu
+def printBoard(board):
+    print('|' + str(1) + '|' + str(2) + '|' + str(3) + '|' + str(4) + '|')
+    print('---------')
+    print('|' + board[1] + '|' + board[2] + '|' + board[3] + '|' + board[4] + '|')
+    print('---------')
+    print('|' + board[5] + '|' + board[6] + '|' + board[7] + '|' + board[8] + '|')
+    print('---------')
+    print('|' + board[9] + '|' + board[10] + '|' + board[11] + '|' + board[12] + '|')
+    print('---------')
+    print('|' + board[13] + '|' + board[14] + '|' + board[15] + '|' + board[16] + '|')
+    print('---------')
 
-import random
+def checkWinner(board, player):
+    print('Checking if ' + player + ' is a winner...')
+    
+    # Code for checking if either the player R or Y has won.
+    return ((board[1] == player and board[2] == player and board[3] == player and board[4] == player) or # Winner opt across row 1
+    (board[5] == player and board[6] == player and board[7] == player and board[8] == player) or         # Winner opt across row 2
+    (board[9] == player and board[10] == player and board[11] == player and board[12] == player) or         # Winner opt across row 3
+    (board[13] == player and board[14] == player and board[15] == player and board[16] == player) or         # Winner opt across row 4
+    (board[1] == player and board[5] == player and board[9] == player and board[13] == player) or         # Winner opt down column 1
+    (board[2] == player and board[2] == player and board[6] == player and board[14] == player) or         # Winner opt down column 2
+    (board[3] == player and board[7] == player and board[11] == player and board[15] == player) or         # Winner opt down column 3
+    (board[4] == player and board[8] == player and board[12] == player and board[16] == player) or         # Winner opt down column 4
+    (board[1] == player and board[6] == player and board[11] == player and board[16] == player) or         # Winner opt for diagonal
+    (board[4] == player and board[7] == player and board[10] == player and board[13] == player))           # Winner opt for other diagonal
 
+def startGame(board, Col)
+    
+    
 
-class Player(object):
-    def __init__(self, character):
-        self.character = character
-
-
-class Human(Player):
-    def go(self, board):
-        while True:
-            column = int(input('Column: '))
-
-            if board.insert(column, self.character):
-                return True
-
-
-class Ai(Player):
-    def go(self, board):
-        print("I'm processing my next move.")
-        while True:
-            if board.insert(random.randint(0, 6), self.character):
-                return True
-
-
-class Board(object):
-    def __init__(self):
-        # initialize board of 6 rows by 7 columns to empty spaces
-        # let's try it column major. this will make it easier to insert a piece
-        self.board = [[] for i in range(0, 7)]
-        for i in range(0, 7):
-            self.board[i] = [' ' for j in range(0, 6)]
-
-    def display(self):
-        # display is a little trickier due to the column major nature we are attempting
-
-        # display column numbers
-        print([str(i) for i in range(0, len(self.board))])
-
-        for i in range(len(self.board[0]) - 1, -1, -1):
-            print([self.board[j][i] for j in range(0, len(self.board))])
-
-    def insert(self, column, piece):
-        """
-        attempt to place piece into board in column
-        :param column: index of column to place. 0 indexed
-        :param piece: character to place into column
-        :return: True if piece was put into board. False otherwise
-        """
-
-        # bounds check
-        if column > 6 or column < 0:
-            return False
-
-        for i in range(0, 6):
-            if ' ' == self.board[column][i]:
-                self.board[column][i] = piece
-                return True
-
-        return False
-
-    def filled(self):
-        for i in range(0, len(self.board)):
-            if any(map(lambda x: x == ' ', self.board[i])):
-                return False
-
-        return True
-
-    def won_by(self, piece):
-        # match by column
-        if any(map(lambda x: self.match_four(x, piece), self.board)):
-            return True
-
-        # match by row
-        for i in range(0, len(self.board[0])):
-            row = [self.board[j][i] for j in range(0, len(self.board))]
-            if self.match_four(row, piece):
-                return True
-
-        # match by diagonal
-        for i in range(0, len(self.board)): # for each column
-            for j in range(0, len(self.board[i])): # for each constituent
-                # look north west
-                if self.contains(i - 3, j - 3):
-                    # construct list to pass to match_four
-                    if self.match_four([self.board[i - k][j - k] for k in range(0, 4)], piece):
-                        return True
-
-                # look north east
-                if self.contains(i + 3, j - 3):
-                    if self.match_four([self.board[i + k][j - k] for k in range(0, 4)], piece):
-                        return True
-
-                # etc
-                if self.contains(i - 3, j + 3):
-                    if self.match_four([self.board[i - k][j + k] for k in range(0, 4)], piece):
-                        return True
-
-                # etc again
-                if self.contains(i + 3, j + 3):
-                    if self.match_four([self.board[i + k][j + k] for k in range(0, 4)], piece):
-                        return True
-
-    def contains(self, col, row):
-        if col < 0 or col >= len(self.board):
-            return False
-        elif row < 0 or row >= len(self.board[0]):
-            return False
+def startGame(startingPlayer, board):
+    turn = startingPlayer# This line is taking startingPlayer and storing ii in the value turn.
+    for i in range(0,16):# This line is the beginning of the for loop from 0-15, therefore running 16 times.
+        printBoard(board)# This line is printing the board after every turn.
+        print('Turn for ' + turn + '. pick the column you want to put your piece in?')# This line is asking either player Y or R to take their turn.
+        move = int(input())
+        board[move] = turn
+        if( checkWinner(board, 'R') ):# The lines from 28-30 are checking if the player R has won.
+            print('R wins!')
+            break
+        elif ( checkWinner(board, 'Y') ):# The lines from 31-33 are checking if the player Y has won.
+            print('Y wins!')
+            break
+    
+        if turn == 'R':# The line from 35-38 swaps the players from R to Y or Y to R.
+            turn = 'Y'
         else:
-            return True
-
-
-    def match_four(self, arr, piece):
-        num = 0
-        for i in range(0, len(arr)):
-            if piece == arr[i]:
-                num += 1
-                if 4 == num:
-                    return True
-            else:
-                num = 0
-
-        return num == 4
-
-
-if __name__ == '__main__':
-    players = [Human('R'), Ai('Y')]
-    board = Board()
-
-    player_index = 0
-
-    while not board.filled():
-        board.display()
-
-        current_player = players[player_index]
-
-        current_player.go(board)
-
-        # a game can only be won by a player on their own turn
-        if board.won_by(current_player.character):
-            board.display()
-            print("Player " + current_player.character + " has won the game!")
-            exit()
-
-        player_index = (player_index + 1) % 2
+            turn = 'R'
+        
+    printBoard(board)# this line prints the TicTac board at the end.
 
